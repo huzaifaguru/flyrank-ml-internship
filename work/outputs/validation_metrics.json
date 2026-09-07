@@ -1,0 +1,49 @@
+{
+  "notebook": "w06_validation_audit.ipynb",
+  "lane": "Lane 4 - CTR / Engagement Opportunity Scoring",
+  "seed": 42,
+  "sklearn": "1.8.0",
+  "slice": {
+    "pages": 8825,
+    "clients": 28,
+    "base_rate": 0.2544
+  },
+  "before_after": {
+    "Logistic Regression | BEFORE random": {
+      "p@50": 0.88,
+      "p@200": 0.705,
+      "AP": 0.6302,
+      "AUC": 0.8418
+    },
+    "Logistic Regression | AFTER grouped": {
+      "p@50": 0.824,
+      "p@200": 0.648,
+      "AP": 0.5999,
+      "AUC": 0.8339
+    },
+    "Random Forest | BEFORE random": {
+      "p@50": 0.852,
+      "p@200": 0.699,
+      "AP": 0.6298,
+      "AUC": 0.8398
+    },
+    "Random Forest | AFTER grouped": {
+      "p@50": 0.808,
+      "p@200": 0.654,
+      "AP": 0.5992,
+      "AUC": 0.8327
+    }
+  },
+  "spread_p_at_50": {
+    "Logistic Regression | BEFORE random": 0.0469,
+    "Logistic Regression | AFTER grouped": 0.091,
+    "Random Forest | BEFORE random": 0.0415,
+    "Random Forest | AFTER grouped": 0.1154
+  },
+  "leakage_audit": {
+    "top_excluded_column_solo_AUC": 0.913,
+    "top_included_column_solo_AUC": 0.823,
+    "client_identifiability_AUC": 0.9376
+  },
+  "verdict": "Random 5-fold inflates p@50 by ~0.05 and halves the reported spread. The most predictive single column in the data (ctr, solo AUC 0.913) is correctly excluded as a 90-day overlap. Claims downgraded from comparative to directional."
+}
