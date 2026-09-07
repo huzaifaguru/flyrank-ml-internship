@@ -1,0 +1,108 @@
+{
+  "notebook": "w05_model.ipynb",
+  "lane": "Lane 4 - CTR / Engagement Opportunity Scoring",
+  "data": "data/raw/content_refresh_anonymized.csv",
+  "seed": 42,
+  "versions": {
+    "sklearn": "1.8.0",
+    "pandas": "3.0.2",
+    "numpy": "2.4.4"
+  },
+  "slice": {
+    "pages": 8825,
+    "clients": 28,
+    "base_rate": 0.2544
+  },
+  "split": "GroupKFold(n_splits=5) on client_id; 3 of 5 folds test a single client",
+  "baseline_reproduced_from_ML07": {
+    "p@10": 1.0,
+    "p@20": 1.0,
+    "p@50": 0.92,
+    "p@200": 0.82
+  },
+  "pooled_out_of_fold": {
+    "Random shortlist (base rate)": {
+      "p@10": 0.254,
+      "p@20": 0.254,
+      "p@50": 0.254,
+      "p@200": 0.254,
+      "AP": 0.254,
+      "AUC": 0.5
+    },
+    "Logistic Regression": {
+      "p@10": 0.8,
+      "p@20": 0.85,
+      "p@50": 0.84,
+      "p@200": 0.875,
+      "AP": 0.617,
+      "AUC": 0.837
+    },
+    "Decision Tree (d=3)": {
+      "p@10": 0.3,
+      "p@20": 0.65,
+      "p@50": 0.64,
+      "p@200": 0.72,
+      "AP": 0.545,
+      "AUC": 0.817
+    },
+    "Random Forest": {
+      "p@10": 0.9,
+      "p@20": 0.95,
+      "p@50": 0.92,
+      "p@200": 0.825,
+      "AP": 0.615,
+      "AUC": 0.832
+    },
+    "Gradient Boosting": {
+      "p@10": 1.0,
+      "p@20": 0.95,
+      "p@50": 0.86,
+      "p@200": 0.87,
+      "AP": 0.593,
+      "AUC": 0.818
+    },
+    "Baseline rule (frozen)": {
+      "p@10": 1.0,
+      "p@20": 1.0,
+      "p@50": 0.92,
+      "p@200": 0.82,
+      "AP": 0.58,
+      "AUC": 0.803
+    }
+  },
+  "per_fold_p_at_50": {
+    "Logistic Regression": {
+      "mean": 0.824,
+      "std": 0.091
+    },
+    "Decision Tree (d=3)": {
+      "mean": 0.612,
+      "std": 0.1006
+    },
+    "Random Forest": {
+      "mean": 0.808,
+      "std": 0.1154
+    },
+    "Gradient Boosting": {
+      "mean": 0.796,
+      "std": 0.0865
+    },
+    "Baseline rule (frozen)": {
+      "mean": 0.804,
+      "std": 0.1071
+    }
+  },
+  "disagreement_analysis": {
+    "shared_top200": 102,
+    "model_only_precision": 0.8367,
+    "rule_only_precision": 0.7245
+  },
+  "top_features_permutation_ap": {
+    "clicks_prev_30d": 0.1325,
+    "ctr_pctile_prev": 0.1231,
+    "impressions_prev_30d": 0.118,
+    "word_count": 0.0867,
+    "char_count": 0.0603
+  },
+  "verdict": "baseline not beaten at K<=50; models win at K=200, AP and AUC; all differences within one fold-std. Model's real gain is coverage, not precision."
+}
