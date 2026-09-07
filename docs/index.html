@@ -86,7 +86,10 @@
 
 <h2 id="abstract">Abstract</h2>
 <div class="abstract">
-<p><b>Which already-visible pages deserve a reviewer's first hour?</b> Using the FlyRank ML Internship
+<p>Content published into a client's site ranks, then decays quietly, and FlyRank's production answer is
+a set of hand-written flags that a learned model is assumed to be able to beat. This paper tests that
+assumption on one well-posed case and finds against it.
+<b>Which already-visible pages deserve a reviewer's first hour?</b> Using the FlyRank ML Internship
 dataset — a pseudonymized 30,000-row content snapshot, with the data contract validated against a
 78.8-million-row production search warehouse — I built a ranked queue of pages whose click-through rate
 sits below what comparable pages at the same exposure achieve, measured in a 30-day window strictly after
@@ -123,6 +126,43 @@ would.</p>
 <p>So the question is: <b>which visible pages capture fewer clicks than comparable pages at the same
 exposure?</b> The tension that shapes this paper is that a rule written in an afternoon answers it
 extremely well, and four models could not improve on it.</p>
+
+<h3>Where this problem comes from</h3>
+
+<p>This is not a hypothetical inventory. FlyRank runs content as infrastructure: it researches and writes
+content, publishes it into a client's site, then watches search data and optimizes — the whole cycle,
+run by software rather than by people working through a list. That model has a specific failure mode.
+Content that gets found in search ranks, and then <b>decays quietly</b> — rankings hold but clicks drift
+down, and nobody notices until a quarterly report says so. At the scale FlyRank operates, noticing late
+is the default, because there is no human reading 11,000 pages.</p>
+
+<p>The product's existing answer is a set of <b>hand-written flags</b> — a health score, quick-win tags,
+needs-attention markers. Thresholds picked by a person, if-this-then-that. They work, and they run in
+production today. The premise of this internship is that rules run out where signals get many, tangled
+and shifting, and that a learned model should be able to beat one. <b>This paper is the negative
+result on that premise, measured rather than asserted.</b> The four-line rule in §3 is a faithful
+stand-in for a production flag, and four supervised models trained on the same folds could not beat it
+where a reviewer actually looks.</p>
+
+<p><b>What that is worth to the product is not nothing.</b> A negative result on a well-posed comparison
+tells a content team where <i>not</i> to spend engineering effort: replacing this particular flag with a
+classifier buys no precision at the head of the queue. It also locates the one place a model does add
+something measurable — the lower-volume pages a shortfall-times-log-volume rule pushes down by
+construction and cannot order at all, where 3,195 pages sit tied at a score of exactly zero and
+under-capture at the same rate as everything else. That is a coverage gap in the current flags, and it is
+the concrete product change this work supports.</p>
+
+<p>The finding that reaches furthest, though, is §6's: <b>42% of flagged pages stop under-capturing
+within 30 days with nobody touching them.</b> Any before/after case built on a flag queue — "we fixed
+these pages and clicks went up" — inherits that rate as unearned credit. That is a measurement about how
+this class of flag should be evaluated at all, and it applies to the hand-written rules already in
+production exactly as much as it applies to anything built here.</p>
+
+<p>Two constraints come from the same source and are honoured throughout. <b>Product flags are outputs,
+never inputs</b> — a health score encodes a decision someone already made, so using it as a feature
+would produce a model that has learned the rule it is supposed to be tested against. And the claim
+language stays <i>observed / measured / directional / decision-support</i>, which is why §5 is the
+longest section here and why nothing in §6 is automated.</p>
 
 <h2 id="data">2. Data</h2>
 
