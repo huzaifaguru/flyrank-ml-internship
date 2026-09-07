@@ -1,0 +1,60 @@
+{
+  "notebook": "w07_action_playbook.ipynb",
+  "lane": "Lane 4 - CTR / Engagement Opportunity Scoring",
+  "seed": 42,
+  "sklearn": "1.8.0",
+  "queue": {
+    "pages": 11119,
+    "clients": 28,
+    "min_impressions": 500,
+    "eval_coverage": 0.7937
+  },
+  "scoring": {
+    "primary": "frozen ML-07 rule: ctr_shortfall_pp * log1p(impressions_prev_30d)",
+    "secondary": "LogisticRegression out-of-fold, restricted to volume bands 0-2",
+    "why_two_lists": "ML-09: the model's measured advantage is coverage, not precision"
+  },
+  "frozen_baseline": {
+    "p@50": 0.92,
+    "p@200": 0.82
+  },
+  "reason_code_mix": {
+    "AT_OR_ABOVE_VOLUME_PEERS": 5562,
+    "CTR_BELOW_VOLUME_PEERS": 2096,
+    "ZERO_CLICKS_ON_REAL_VOLUME": 2043,
+    "CTR_FAR_BELOW_VOLUME_PEERS": 1418
+  },
+  "action_mix": {
+    "monitor": 5562,
+    "rewrite_title_meta": 3461,
+    "review_intent_match": 2096
+  },
+  "frozen_reason_code_mix_pct": {
+    "AT_OR_ABOVE_VOLUME_PEERS": 50.0,
+    "CTR_BELOW_VOLUME_PEERS": 18.9,
+    "ZERO_CLICKS_ON_REAL_VOLUME": 18.4,
+    "CTR_FAR_BELOW_VOLUME_PEERS": 12.8
+  },
+  "decay_finding": {
+    "persistence_rate": 0.583,
+    "unaided_recovery_rate": 0.417,
+    "onset_rate": 0.147,
+    "base_rate": 0.2544,
+    "n_flagged_prior": 2175,
+    "n_fine_prior": 6650,
+    "claim": "42% of flagged pages stop under-capturing within 30 days with no intervention - the reason this playbook attaches no value estimate to a fix"
+  },
+  "never_automate": [
+    "rewrite title/meta",
+    "bulk-action the top N",
+    "delete/merge/redirect",
+    "apply to an unchecked new client",
+    "blend the two lists",
+    "publish per-page rows externally"
+  ],
+  "traces_to": [
+    "work/outputs/baseline_metrics.json",
+    "work/outputs/model_metrics.json",
+    "work/outputs/validation_metrics.json"
+  ]
+}
